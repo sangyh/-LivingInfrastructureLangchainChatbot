@@ -7,5 +7,6 @@ pydantic
 langchain
 uvicorn
 jinja2
+faiss-cpu
 libmagic
 gunicorn
