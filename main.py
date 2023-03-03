@@ -7,17 +7,19 @@ from typing import Optional
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.templating import Jinja2Templates
 from langchain.vectorstores import VectorStore
+from langchain.vectorstores.faiss import FAISS
+from langchain.embeddings import OpenAIEmbeddings
 
 from callback import QuestionGenCallbackHandler, StreamingLLMCallbackHandler
 from query_data import get_chain
 from schemas import ChatResponse
 
-#from pathlib import Path
-#from dotenv import load_dotenv, find_dotenv
-#load_dotenv(Path("/Users/sangyhanumasagar/Desktop/Freelancing/Spherical/config/.env"))
-#import openai
-#import os
-#openai.api_key = os.getenv("OPENAI_API_KEY")
+'''from pathlib import Path
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(Path("/Users/sangyhanumasagar/Desktop/Freelancing/Spherical/config/.env"))
+import openai
+import os
+openai.api_key = os.getenv("OPENAI_API_KEY")'''
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -29,9 +31,12 @@ async def startup_event():
     logging.info("loading vectorstore")
     if not Path("vectorstore.pkl").exists():
         raise ValueError("vectorstore.pkl does not exist, please run ingest.py first")
-    with open("vectorstore.pkl", "rb") as f:
+    '''with open("vectorstore.pkl", "rb") as f:
         global vectorstore
-        vectorstore = pickle.load(f)
+        vectorstore = pickle.load(f)'''
+    global vectorstore
+    embeddings = OpenAIEmbeddings()
+    vectorstore = FAISS.load_local('./',embeddings)
 
 
 @app.get("/")
