@@ -1,9 +1,6 @@
 openai
 fastapi
-black
-isort
 websockets
-pydantic
 langchain
 uvicorn
 jinja2
