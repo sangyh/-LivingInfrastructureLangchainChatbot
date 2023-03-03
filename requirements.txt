@@ -1,6 +1,5 @@
 openai
 fastapi
 websockets
-langchain
 uvicorn
 jinja2
