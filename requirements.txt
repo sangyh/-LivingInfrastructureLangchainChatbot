@@ -7,7 +7,3 @@ pydantic
 langchain
 uvicorn
 jinja2
-faiss-cpu
-bs4
-unstructured
-libmagic
