@@ -12,12 +12,12 @@ from callback import QuestionGenCallbackHandler, StreamingLLMCallbackHandler
 from query_data import get_chain
 from schemas import ChatResponse
 
-from pathlib import Path
-from dotenv import load_dotenv, find_dotenv
-load_dotenv(Path("/Users/sangyhanumasagar/Desktop/Freelancing/Spherical/config/.env"))
-import openai
-import os
-openai.api_key = os.getenv("OPENAI_API_KEY")
+#from pathlib import Path
+#from dotenv import load_dotenv, find_dotenv
+#load_dotenv(Path("/Users/sangyhanumasagar/Desktop/Freelancing/Spherical/config/.env"))
+#import openai
+#import os
+#openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
