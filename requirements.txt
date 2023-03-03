@@ -1,6 +1,11 @@
 openai
 fastapi
+black
+isort
 websockets
+pydantic
 langchain
 uvicorn
 jinja2
+libmagic
+gunicorn
