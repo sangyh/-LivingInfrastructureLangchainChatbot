@@ -2,13 +2,31 @@
 from langchain.callbacks.base import AsyncCallbackManager
 from langchain.callbacks.tracers import LangChainTracer
 from langchain.chains import ChatVectorDBChain
-from langchain.chains.chat_vector_db.prompts import (CONDENSE_QUESTION_PROMPT,
-                                                     QA_PROMPT)
+#from langchain.chains.chat_vector_db.prompts import (CONDENSE_QUESTION_PROMPT,
+#                                                     QA_PROMPT)
 from langchain.chains.llm import LLMChain
 from langchain.chains.question_answering import load_qa_chain
+#from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from langchain.llms import OpenAI
 from langchain.vectorstores.base import VectorStore
 
+
+from langchain.prompts.prompt import PromptTemplate
+
+_template = """Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
+Chat History:
+{chat_history}
+Follow Up Input: {question}
+Standalone question:"""
+CONDENSE_QUESTION_PROMPT = PromptTemplate.from_template(_template)
+
+prompt_template = """Answer the question only using the following pieces of context. If the question is unrelated to the context, say I don't know.
+{context}
+Question: {question}
+Helpful Answer:"""
+QA_PROMPT = PromptTemplate(
+    template=prompt_template, input_variables=["context", "question"]
+)
 
 def get_chain(
     vectorstore: VectorStore, question_handler, stream_handler, tracing: bool = False
@@ -50,5 +68,9 @@ def get_chain(
         combine_docs_chain=doc_chain,
         question_generator=question_generator,
         callback_manager=manager,
+        return_source_documents=True,
+        top_k_docs_for_context=3
     )
+
+    #print(qa)
     return qa

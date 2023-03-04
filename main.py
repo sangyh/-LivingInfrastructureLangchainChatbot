@@ -29,9 +29,10 @@ vectorstore: Optional[VectorStore] = None
 @app.on_event("startup")
 async def startup_event():
     logging.info("loading vectorstore")
+    '''
     if not Path("vectorstore.pkl").exists():
         raise ValueError("vectorstore.pkl does not exist, please run ingest.py first")
-    '''with open("vectorstore.pkl", "rb") as f:
+    with open("vectorstore.pkl", "rb") as f:
         global vectorstore
         vectorstore = pickle.load(f)'''
     global vectorstore
@@ -50,10 +51,10 @@ async def websocket_endpoint(websocket: WebSocket):
     question_handler = QuestionGenCallbackHandler(websocket)
     stream_handler = StreamingLLMCallbackHandler(websocket)
     chat_history = []
-    qa_chain = get_chain(vectorstore, question_handler, stream_handler)
+    #qa_chain = get_chain(vectorstore, question_handler, stream_handler)
     # Use the below line instead of the above line to enable tracing
     # Ensure `langchain-server` is running
-    # qa_chain = get_chain(vectorstore, question_handler, stream_handler, tracing=True)
+    qa_chain = get_chain(vectorstore, question_handler, stream_handler, tracing=True)
 
     while True:
         try:
@@ -71,6 +72,16 @@ async def websocket_endpoint(websocket: WebSocket):
             )
             chat_history.append((question, result["answer"]))
 
+        
+            if not result["answer"]==" I don't know.":
+                frontend_sources = []
+                for source in result["source_documents"]:
+                    url = "https://sphericalstudio.notion.site/"+source.metadata['page_id'].replace('-','')
+                    frontend_sources.append(url)
+                frontend_sources = list(set(frontend_sources))
+                source_message = "<br> Sources: "+ '<br>'.join(frontend_sources)
+                source_resp = ChatResponse(sender="bot", message=source_message, type="stream")
+                await websocket.send_json(source_resp.dict())
             end_resp = ChatResponse(sender="bot", message="", type="end")
             await websocket.send_json(end_resp.dict())
         except WebSocketDisconnect:
