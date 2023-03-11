@@ -51,10 +51,10 @@ async def websocket_endpoint(websocket: WebSocket):
     question_handler = QuestionGenCallbackHandler(websocket)
     stream_handler = StreamingLLMCallbackHandler(websocket)
     chat_history = []
-    #qa_chain = get_chain(vectorstore, question_handler, stream_handler)
+    qa_chain = get_chain(vectorstore, question_handler, stream_handler)
     # Use the below line instead of the above line to enable tracing
     # Ensure `langchain-server` is running
-    qa_chain = get_chain(vectorstore, question_handler, stream_handler, tracing=True)
+    #qa_chain = get_chain(vectorstore, question_handler, stream_handler, tracing=True)
 
     while True:
         try:
@@ -75,12 +75,10 @@ async def websocket_endpoint(websocket: WebSocket):
             if not result["answer"]==" I don't know.":
                 frontend_sources = []
                 source_text= []
-                for source in result["source_documents"]:                    
+                for i, source in enumerate(result["source_documents"]):                    
                     url = "https://sphericalstudio.notion.site/"+source.metadata['page_id'].replace('-','')
                     frontend_sources.append(url)
-
-                    source_text.append("<span id='more'>" + source.page_content + "[<a href=" + url + ">url</a>] </span>")
-                    print(source_text)
+                    source_text.append("<span id='more'>"+str(i+1)+'. ' + source.page_content + "[<a href=" + url + ">url</a>] </span>")
                     
                 frontend_sources = list(set(frontend_sources))
                 source_message = "<br><br> Sources: "+ '<br>'.join(source_text)

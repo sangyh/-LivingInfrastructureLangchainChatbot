@@ -113,9 +113,8 @@
                             readMoreButton.classList.add("read-more");
                             readMoreButton.onclick = function() {
                                 if (readMoreButton.innerHTML === "Read more") {
-                                    // console.log('NOT EQUAL')
                                     readMoreButton.innerHTML = "Read less";
-                                    spn.innerHTML = fullText //moreText.innerHTML.trim() + "...";
+                                    spn.innerHTML = fullText
                                 } else {
                                     readMoreButton.innerHTML = "Read more";
                                     spn.innerHTML = trimmedText + "...";
