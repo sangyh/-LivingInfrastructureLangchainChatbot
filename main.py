@@ -72,14 +72,18 @@ async def websocket_endpoint(websocket: WebSocket):
             )
             chat_history.append((question, result["answer"]))
 
-        
             if not result["answer"]==" I don't know.":
                 frontend_sources = []
-                for source in result["source_documents"]:
+                source_text= []
+                for source in result["source_documents"]:                    
                     url = "https://sphericalstudio.notion.site/"+source.metadata['page_id'].replace('-','')
                     frontend_sources.append(url)
+
+                    source_text.append("<span id='more'>" + source.page_content + "[<a href=" + url + ">url</a>] </span>")
+                    print(source_text)
+                    
                 frontend_sources = list(set(frontend_sources))
-                source_message = "<br> Sources: "+ '<br>'.join(frontend_sources)
+                source_message = "<br><br> Sources: "+ '<br>'.join(source_text)
                 source_resp = ChatResponse(sender="bot", message=source_message, type="stream")
                 await websocket.send_json(source_resp.dict())
             end_resp = ChatResponse(sender="bot", message="", type="end")

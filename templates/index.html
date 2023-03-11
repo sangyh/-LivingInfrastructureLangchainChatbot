@@ -49,6 +49,25 @@
         .form-message {
           margin-top: 10px;
         }
+        button.read-more, button.read-less {
+            border: none;
+            color: #4CAF50;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin-top: 4px;
+            cursor: pointer;
+        }
+
+        button.read-less {
+            background-color: #f44336; /* Red */
+        }
+
+        a {
+            color: #f44336;
+            text-decoration: underline;
+        }
     </style>
     <script>
         // var endpoint = "ws://localhost:9000/chat";
@@ -72,11 +91,42 @@
                     var header = document.getElementById('header');
                     header.innerHTML = "Chatbot is typing...";
                     var p = messages.lastChild.lastChild;
+                    
                     if (data.message === "\n") {
                         p.innerHTML += "<br>";
                     } else {
                         p.innerHTML += data.message;
+                        
                     }
+                    
+                    const spans = p.querySelectorAll("[id^='more']");
+                    
+                    spans.forEach(function(spn) {
+                        const parentElement = spn.parentElement;
+                        const fullText = spn.innerHTML;
+                        const trimmedText = fullText.trim().slice(0, 200);
+                        
+                        if (trimmedText !== fullText.trim()) {
+                            spn.innerHTML = trimmedText + "...";
+                            const readMoreButton = document.createElement("button");
+                            readMoreButton.innerHTML = "Read more";
+                            readMoreButton.classList.add("read-more");
+                            readMoreButton.onclick = function() {
+                                if (readMoreButton.innerHTML === "Read more") {
+                                    // console.log('NOT EQUAL')
+                                    readMoreButton.innerHTML = "Read less";
+                                    spn.innerHTML = fullText //moreText.innerHTML.trim() + "...";
+                                } else {
+                                    readMoreButton.innerHTML = "Read more";
+                                    spn.innerHTML = trimmedText + "...";
+                                }
+                            };
+                            const newDiv = document.createElement("div");
+                            newDiv.appendChild(spn);
+                            newDiv.appendChild(readMoreButton);
+                            parentElement.appendChild(newDiv);
+                        }
+                    });
                 } else if (data.type === "info") {
                     var header = document.getElementById('header');
                     header.innerHTML = data.message;
