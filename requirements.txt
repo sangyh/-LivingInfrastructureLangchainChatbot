@@ -31,3 +31,4 @@ faiss-cpu
 bs4
 unstructured
 libmagic
+gunicorn
