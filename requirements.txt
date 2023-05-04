@@ -90,7 +90,6 @@ numexpr==2.8.4
 numpy==1.23.5
 oauthlib==3.2.2
 omegaconf==2.3.0
-onnxruntime
 openai==0.27.2
 openapi-schema-pydantic==1.2.4
 opencv-python==4.6.0.66
