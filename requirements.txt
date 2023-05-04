@@ -1,18 +1,33 @@
-openai==0.27.2
-fastapi==0.94.1
-black==21.4b2
-isort==5.12.0
-websockets==10.4
-pydantic==1.10.6
-openapi-schema-pydantic==1.2.4
+# openai==0.27.2
+# fastapi==0.94.1
+# black==21.4b2
+# isort==5.12.0
+# websockets==10.4
+# pydantic==1.10.6
+# openapi-schema-pydantic==1.2.4
+# langchain==0.0.115
+# uvicorn==0.21.0
+# Jinja2==3.1.2
+# joblib==1.2.0
+# jsonschema==4.17.3
+# faiss-cpu==1.7.3
+# bs4
+# unstructured
+# unstructured-inference==0.2.11
+# libmagic
+# libmagic==1.0
+
+
+openai
+fastapi
+black
+isort
+websockets
+pydantic
 langchain==0.0.115
-uvicorn==0.21.0
-Jinja2==3.1.2
-joblib==1.2.0
-jsonschema==4.17.3
-faiss-cpu==1.7.3
+uvicorn
+jinja2
+faiss-cpu
 bs4
 unstructured
-unstructured-inference==0.2.11
 libmagic
-libmagic==1.0

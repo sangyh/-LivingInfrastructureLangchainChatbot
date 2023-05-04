@@ -139,3 +139,5 @@ vectorstore.pkl
 langchain.readthedocs.io/
 .vercel
 .modules
+
+saveddocuments.pkl
